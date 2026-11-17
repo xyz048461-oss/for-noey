@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ถึงเนย 💖</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#ff9a9e,#fad0c4,#a18cd1,#fbc2eb);
+  background-size:400% 400%;animation:bg 12s ease infinite;
+  font-family:sans-serif;overflow:hidden;text-align:center;color:#fff
+}
+@keyframes bg{
+  0%{background-position:0 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0 50%}
+}
+.card{
+  position:relative;z-index:2;padding:32px 24px;margin:16px;width:100%;max-width:400px;
+  background:rgba(255,255,255,.2);backdrop-filter:blur(12px);
+  border-radius:24px;box-shadow:0 8px 32px rgba(0,0,0,.2)
+}
+.big{font-size:64px;animation:beat 1.2s infinite}
+@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+h1{margin:12px 0;font-size:28px;text-shadow:0 2px 8px rgba(0,0,0,.25)}
+#msg{
+  min-height:120px;display:flex;align-items:center;justify-content:center;
+  line-height:1.8;font-size:20px;white-space:pre-line;
+  text-shadow:0 1px 6px rgba(0,0,0,.2)
+}
+#count{font-size:14px;opacity:.9;margin-top:6px}
+.btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+button{
+  padding:12px 22px;border:0;border-radius:30px;
+  background:#fff;color:#e91e63;font-size:17px;font-weight:bold;
+  box-shadow:0 4px 12px rgba(0,0,0,.2)
+}
+button.alt{background:rgba(255,255,255,.35);color:#fff}
+button:active{transform:scale(.95)}
+.h{position:fixed;bottom:-40px;animation:up linear forwards;z-index:1;pointer-events:none}
+@keyframes up{to{transform:translateY(-110vh) rotate(360deg);opacity:0}}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="big">💖</div>
+  <h1>ถึง เนย ที่รัก</h1>
+  <div id="msg">กดปุ่มด้านล่างเลยนะ 👇</div>
+  <div id="count"></div>
+  <div class="btns">
+    <button id="next">คำถัดไป 💌</button>
+    <button id="rand" class="alt">สุ่ม 🎲</button>
+  </div>
+</div>
+
+<script>
+const words = [
+  "เนยรู้ไหม...\nวันไหนไม่ได้เห็นหน้าเนย\nวันนั้นมันขาดอะไรไปบางอย่างเลย 🥺",
+  "รอยยิ้มของเนย\nทำให้ใจเราละลาย\nยิ่งกว่าเนยละลายบนขนมปังอีก 🧈🍞",
+  "ขอบคุณที่อยู่ข้างกันนะ\nทั้งวันที่ดีและวันที่แย่\nมีเนย ทุกวันก็โอเคหมดเลย 💕",
+  "เนยคือคนที่ทำให้เรา\nอยากเป็นคนที่ดีขึ้นทุกวัน ✨",
+  "ถ้าความรักวัดเป็นน้ำหนักได้\nเราคงรักเนยหนักจนโลกเอียง 🌍💗",
+  "เนยเป็นคนแรกที่เรานึกถึงตอนตื่น\nและเป็นคนสุดท้ายตอนก่อนนอนเสมอ 🌙",
+  "ไม่ต้องเก่งที่สุดในโลกก็ได้\nแค่เป็นเนยของเรา\nก็เพอร์เฟกต์แล้ว 😚",
+  "เวลาอยู่กับเนย\nนาฬิกามันเดินเร็วผิดปกติ\nอยากให้หยุดไว้ตรงนี้เลย ⏳💖",
+  "รักเนยมากกว่าเมื่อวาน\nและน้อยกว่าพรุ่งนี้ 💘",
+  "สุดท้ายนี้...\nเรารักเนยนะ ❤️\nรักที่สุดในโลกเลย!"
+];
+
+const emojis = ["💖","💕","💗","💘","❤️","🌸","✨","🧈"];
+const msg = document.getElementById("msg");
+const count = document.getElementById("count");
+let idx = -1, typing = false, timer = null;
+
+function heart(){
+  const h = document.createElement("div");
+  h.className = "h";
+  h.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+  h.style.left = Math.random()*100 + "vw";
+  h.style.fontSize = (16 + Math.random()*28) + "px";
+  h.style.animationDuration = (4 + Math.random()*5) + "s";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 9000);
+}
+setInterval(heart, 400);
+
+function show(i){
+  clearInterval(timer);
+  idx = i;
+  const t = words[idx];
+  msg.textContent = "";
+  count.textContent = (idx + 1) + " / " + words.length;
+  for (let k = 0; k < 20; k++) setTimeout(heart, k * 40);
+  let n = 0;
+  typing = true;
+  timer = setInterval(() => {
+    msg.textContent += t[n++];
+    if (n >= t.length) { clearInterval(timer); typing = false; }
+  }, 60);
+}
+
+document.getElementById("next").onclick = () => show((idx + 1) % words.length);
+document.getElementById("rand").onclick = () => {
+  let r;
+  do { r = Math.floor(Math.random()*words.length); } while (r === idx && words.length > 1);
+  show(r);
+};
+</script>
+</body>
+</html>
